@@ -31,11 +31,14 @@ public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
+        viewHolder.timestamp.setText(mNote.get(i).getTimeStamp());
+        viewHolder.title.setText(mNote.get(i).getTitle());
+
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mNote.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
