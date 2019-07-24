@@ -1,10 +1,12 @@
 package pl.aplikacje.notes;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -12,7 +14,10 @@ import pl.aplikacje.notes.adapters.NotesRecyclerAdapter;
 import pl.aplikacje.notes.models.Note;
 import pl.aplikacje.notes.util.VerticalSpacingItemDecorator;
 
-public class NotesListActivity extends AppCompatActivity {
+public class NotesListActivity extends AppCompatActivity implements NotesRecyclerAdapter.OnNoteListener{
+
+    private static final String TAG = "NotesListActivity";
+
 
     //UI components section
     private RecyclerView mRecyclerView;
@@ -32,8 +37,8 @@ public class NotesListActivity extends AppCompatActivity {
         initRecyclerView();
         insertFakeNotes();
 
-        setSupportActionBar((Toolbar)findViewById(R.id.notes_toolbar));
-        setTitle("Notes");
+       // setSupportActionBar((Toolbar)findViewById(R.id.notes_toolbar));
+       // setTitle("Notes");
     }
 
     private void insertFakeNotes(){
@@ -55,10 +60,15 @@ public class NotesListActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(linearLayoutManager);
         VerticalSpacingItemDecorator itemDecorator = new VerticalSpacingItemDecorator(10);
         mRecyclerView.addItemDecoration(itemDecorator);
-        mNotesRecyclerAdapter = new NotesRecyclerAdapter(mNotes);
+        mNotesRecyclerAdapter = new NotesRecyclerAdapter(mNotes,this);
         mRecyclerView.setAdapter(mNotesRecyclerAdapter);
 
     }
 
 
+    @Override
+    public void onNoteClick(int position) {
+        Log.d(TAG, "onNoteClick: clicked"+position);
+
+    }
 }
