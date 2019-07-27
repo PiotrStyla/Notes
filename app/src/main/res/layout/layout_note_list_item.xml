@@ -18,7 +18,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/note_title"
-        android:textSize="23sp"
+        android:textSize="20sp"
         android:layout_weight="75"
         android:text="Some Note Title"
         android:textColor="#000"
@@ -34,7 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/note_timestamp"
-        android:textSize="17sp"
+        android:textSize="15sp"
         android:layout_weight="20"
         android:text="Dec 1 2017"
         android:padding="10dp" />

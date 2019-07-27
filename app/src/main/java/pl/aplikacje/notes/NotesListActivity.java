@@ -44,9 +44,9 @@ public class NotesListActivity extends AppCompatActivity implements NotesRecycle
     private void insertFakeNotes(){
         for (int i = 0; i <1000 ; i++) {
             Note note = new Note();
-            note.setTitle("Title #" + i);
+            note.setTitle("Notatka nr:  " + i);
             note.setContent("Content #" + i);
-            note.setTimeStamp("Jul 2019");
+            note.setTimeStamp("Lipiec 2019");
             mNotes.add(note);
         }
         mNotesRecyclerAdapter.notifyDataSetChanged();

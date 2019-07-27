@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="85"
         android:id="@+id/note_text_title"
-        android:text="title of note"
+        android:text="tytuł notatki"
         android:textColor="#000"
         android:layout_marginStart="15dp"
         android:textSize="23sp"
