@@ -37,8 +37,8 @@ public class NotesListActivity extends AppCompatActivity implements NotesRecycle
         initRecyclerView();
         insertFakeNotes();
 
-       // setSupportActionBar((Toolbar)findViewById(R.id.notes_toolbar));
-       // setTitle("Notes");
+        setSupportActionBar((Toolbar)findViewById(R.id.notes_toolbar));
+        setTitle("Notesik Piotra");
     }
 
     private void insertFakeNotes(){
