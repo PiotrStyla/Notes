@@ -28,6 +28,7 @@
         android:id="@+id/note_text"
         android:textSize="23sp"
         android:textColor="#000"
-        android:padding="5dp"/>
+        android:padding="5dp"
+        android:layout_gravity="top"/>
 
 </LinearLayout>
