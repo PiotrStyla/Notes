@@ -8,7 +8,7 @@ import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class LinedEditText extends AppCompatEditText {
+public class LinedEditText extends android.support.v7.widget.AppCompatEditText {
 
     private Rect mRect;
     private Paint mPaint;
@@ -21,7 +21,7 @@ public class LinedEditText extends AppCompatEditText {
         mPaint = new Paint();
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(2);
-        mPaint.setColor(0xFFFD966);
+        mPaint.setColor(0xFFFFD966);
     }
 
 
@@ -38,7 +38,7 @@ public class LinedEditText extends AppCompatEditText {
 
         int baseLine = getLineBounds(0,r);
 
-        for (int i = 0; i <numberOfLines ; i++) {
+        for (int i = 0; i < numberOfLines ; i++) {
             canvas.drawLine(r.left,baseLine+1,r.right,baseLine+1,paint);
 
             baseLine += lineHeight;
