@@ -121,7 +121,7 @@ public class NoteActivity extends AppCompatActivity
 
         mMode = EDIT_MODE_DISABLED;
         disableContentInteraction();
-        hideSoftKeyboard();
+
 
     }
 
@@ -203,6 +203,7 @@ public class NoteActivity extends AppCompatActivity
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.toolbar_check: {
+                hideSoftKeyboard();
                 disableEditMode();
                 break;
             }
