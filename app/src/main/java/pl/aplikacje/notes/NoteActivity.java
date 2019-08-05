@@ -16,7 +16,8 @@ import pl.aplikacje.notes.models.Note;
 public class NoteActivity extends AppCompatActivity
         implements View.OnTouchListener,
         GestureDetector.OnGestureListener,
-        GestureDetector.OnDoubleTapListener {
+        GestureDetector.OnDoubleTapListener,
+        View.OnClickListener {
 
     private static final String TAG = "NoteActivity";
     private static final int EDIT_MODE_ENEBLED = 1;
@@ -63,6 +64,8 @@ public class NoteActivity extends AppCompatActivity
     private void setListeners(){
         mLinedEditText.setOnTouchListener(this);
         mGestureDecector = new GestureDetector(this,this);
+        mViewTitle.setOnClickListener(this);
+        mCheck.setOnClickListener(this);
 
     }
 
@@ -164,5 +167,32 @@ public class NoteActivity extends AppCompatActivity
     @Override
     public boolean onDoubleTapEvent(MotionEvent e) {
         return false;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.toolbar_check: {
+                disableEditMode();
+                break;
+            }
+            case R.id.note_text_title: {
+                enableEditMode();
+                mEditTitle.requestFocus();
+                mEditTitle.setSelection(mEditTitle.length());
+                break;
+            }
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mMode==EDIT_MODE_ENEBLED){
+            onClick(mCheck);
+        }
+        else{
+            super.onBackPressed();
+        }
     }
 }
