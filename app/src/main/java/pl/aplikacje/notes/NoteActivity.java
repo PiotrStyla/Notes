@@ -58,6 +58,7 @@ public class NoteActivity extends AppCompatActivity
         else{
             //this is not a new note (VIEW MODE)
             setNoteProperties();
+            disableContentInteraction();
         }
         setListeners();
     }
@@ -90,7 +91,22 @@ public class NoteActivity extends AppCompatActivity
         mEditTitle.setVisibility(View.VISIBLE);
 
         mMode = EDIT_MODE_ENEBLED;
+        enableContentInteraction();
 
+    }
+    private void disableContentInteraction(){
+        mLinedEditText.setKeyListener(null);
+        mLinedEditText.setFocusable(false);
+        mLinedEditText.setFocusableInTouchMode(false);
+        mLinedEditText.setCursorVisible(false);
+        mLinedEditText.clearFocus();
+    }
+    private void enableContentInteraction(){
+        mLinedEditText.setKeyListener(new EditText(this).getKeyListener());
+        mLinedEditText.setFocusable(true);
+        mLinedEditText.setFocusableInTouchMode(true);
+        mLinedEditText.setCursorVisible(true);
+        mLinedEditText.requestFocus();
     }
 
 
@@ -102,6 +118,7 @@ public class NoteActivity extends AppCompatActivity
         mEditTitle.setVisibility(View.GONE);
 
         mMode = EDIT_MODE_DISABLED;
+        disableContentInteraction();
 
     }
 
