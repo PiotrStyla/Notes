@@ -51,29 +51,30 @@ public class NoteActivity extends AppCompatActivity
         mCheck = findViewById(R.id.toolbar_check);
         mBackArrow = findViewById(R.id.toolbar_back_arrow);
 
-        if(getIncomingIntent()){
+        if (getIncomingIntent()) {
             //this is a new note (EDIT MODE)
             setNewNoteProperties();
             enableEditMode();
 
-        }
-        else{
+        } else {
             //this is not a new note (VIEW MODE)
             setNoteProperties();
             disableContentInteraction();
         }
         setListeners();
     }
-    private void setListeners(){
+
+    private void setListeners() {
         mLinedEditText.setOnTouchListener(this);
-        mGestureDecector = new GestureDetector(this,this);
+        mGestureDecector = new GestureDetector(this, this);
         mViewTitle.setOnClickListener(this);
         mCheck.setOnClickListener(this);
+        mBackArrow.setOnClickListener(this);
 
     }
 
     private boolean getIncomingIntent() {
-        if(getIntent().hasExtra("selected_note")){
+        if (getIntent().hasExtra("selected_note")) {
             mInitialNote = getIntent().getParcelableExtra("selected_note");
 
             mMode = EDIT_MODE_DISABLED;
@@ -85,7 +86,8 @@ public class NoteActivity extends AppCompatActivity
         mIsNewNote = true;
         return true;
     }
-    private void enableEditMode(){
+
+    private void enableEditMode() {
         mBackArrowContainer.setVisibility(View.GONE);
         mCheckContainer.setVisibility(View.VISIBLE);
 
@@ -96,14 +98,16 @@ public class NoteActivity extends AppCompatActivity
         enableContentInteraction();
 
     }
-    private void disableContentInteraction(){
+
+    private void disableContentInteraction() {
         mLinedEditText.setKeyListener(null);
         mLinedEditText.setFocusable(false);
         mLinedEditText.setFocusableInTouchMode(false);
         mLinedEditText.setCursorVisible(false);
         mLinedEditText.clearFocus();
     }
-    private void enableContentInteraction(){
+
+    private void enableContentInteraction() {
         mLinedEditText.setKeyListener(new EditText(this).getKeyListener());
         mLinedEditText.setFocusable(true);
         mLinedEditText.setFocusableInTouchMode(true);
@@ -112,7 +116,7 @@ public class NoteActivity extends AppCompatActivity
     }
 
 
-    private void disableEditMode(){
+    private void disableEditMode() {
         mBackArrowContainer.setVisibility(View.VISIBLE);
         mCheckContainer.setVisibility(View.GONE);
 
@@ -125,24 +129,24 @@ public class NoteActivity extends AppCompatActivity
 
     }
 
-    private void hideSoftKeyboard(){
+    private void hideSoftKeyboard() {
 
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
         View view = this.getCurrentFocus();
-        if(view == null){
+        if (view == null) {
             view = new View(this);
         }
-        imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 
-    private void setNoteProperties(){
+    private void setNoteProperties() {
         mViewTitle.setText(mInitialNote.getTitle());
         mEditTitle.setText(mInitialNote.getTitle());
         mLinedEditText.setText(mInitialNote.getContent());
     }
 
-    private void setNewNoteProperties(){
+    private void setNewNoteProperties() {
         mViewTitle.setText("Note Title");
         mEditTitle.setText("Note Title");
     }
@@ -190,7 +194,7 @@ public class NoteActivity extends AppCompatActivity
     @Override
     public boolean onDoubleTap(MotionEvent motionEvent) {
         enableEditMode();
-        Log.d(TAG,"Double Tap");
+        Log.d(TAG, "Double Tap");
         return false;
     }
 
@@ -201,7 +205,7 @@ public class NoteActivity extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.toolbar_check: {
                 hideSoftKeyboard();
                 disableEditMode();
@@ -213,17 +217,21 @@ public class NoteActivity extends AppCompatActivity
                 mEditTitle.setSelection(mEditTitle.length());
                 break;
             }
-        }
+            case R.id.toolbar_back_arrow: {
+                finish();
+                break;
 
+            }
+
+        }
     }
-
     @Override
-    public void onBackPressed() {
-        if(mMode==EDIT_MODE_ENEBLED){
+    public void onBackPressed () {
+        if (mMode == EDIT_MODE_ENEBLED) {
             onClick(mCheck);
-        }
-        else{
+        } else {
             super.onBackPressed();
         }
     }
 }
+
