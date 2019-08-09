@@ -1,1 +1,2 @@
-Recycler View List of items in Java
+Aplikacja Android Java
+Notes wykorzystujący SQL-Lite, recycler view
