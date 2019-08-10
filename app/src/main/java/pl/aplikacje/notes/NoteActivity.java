@@ -1,6 +1,7 @@
 package pl.aplikacje.notes;
 
 import android.app.Activity;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -231,6 +232,22 @@ public class NoteActivity extends AppCompatActivity
             onClick(mCheck);
         } else {
             super.onBackPressed();
+        }
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("mode", mMode);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mMode = savedInstanceState.getInt("mode");
+        if(mMode==EDIT_MODE_ENEBLED){
+            enableEditMode();
         }
     }
 }
