@@ -1,7 +1,9 @@
 package pl.aplikacje.notes;
 
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,9 +14,11 @@ import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import pl.aplikacje.notes.adapters.NotesRecyclerAdapter;
 import pl.aplikacje.notes.models.Note;
+import pl.aplikacje.notes.persistance.NoteRepository;
 import pl.aplikacje.notes.util.VerticalSpacingItemDecorator;
 
 public class NotesListActivity extends AppCompatActivity
@@ -30,6 +34,7 @@ public class NotesListActivity extends AppCompatActivity
     //vars secton
     private ArrayList<Note> mNotes = new ArrayList<>();
     private NotesRecyclerAdapter mNotesRecyclerAdapter;
+    private NoteRepository mNoteRepository;
 
 
     @Override
@@ -40,11 +45,31 @@ public class NotesListActivity extends AppCompatActivity
 
         findViewById(R.id.fab).setOnClickListener(this);
 
+        mNoteRepository = new NoteRepository(this);
+
         initRecyclerView();
-        insertFakeNotes();
+        retriveNotes();
+       // insertFakeNotes();
 
         setSupportActionBar((Toolbar)findViewById(R.id.notes_toolbar));
         setTitle("Notesik Piotra");
+    }
+
+    private void retriveNotes(){
+
+        mNoteRepository.retriveNotesTask().observe(this, new Observer<List<Note>>() {
+            @Override
+            public void onChanged(@Nullable List<Note> notes) {
+                if(mNotes.size()>0){
+                    mNotes.clear();
+                }
+                if(notes != null){
+                    mNotes.addAll(notes);
+                }
+                mNotesRecyclerAdapter.notifyDataSetChanged();
+
+            }
+        });
     }
 
     private void insertFakeNotes(){
