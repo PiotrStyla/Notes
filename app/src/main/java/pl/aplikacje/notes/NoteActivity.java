@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import pl.aplikacje.notes.models.Note;
+import pl.aplikacje.notes.persistance.NoteRepository;
 
 public class NoteActivity extends AppCompatActivity
         implements View.OnTouchListener,
@@ -38,6 +39,8 @@ public class NoteActivity extends AppCompatActivity
     private Note mInitialNote;
     private GestureDetector mGestureDecector;
     private int mMode;
+    private NoteRepository mNoteRepository;
+    private Note mFinalNote;
 
 
     @Override
@@ -51,6 +54,8 @@ public class NoteActivity extends AppCompatActivity
         mBackArrowContainer = findViewById(R.id.back_arrow_container);
         mCheck = findViewById(R.id.toolbar_check);
         mBackArrow = findViewById(R.id.toolbar_back_arrow);
+
+        mNoteRepository = new NoteRepository(this);
 
         if (getIncomingIntent()) {
             //this is a new note (EDIT MODE)
@@ -77,6 +82,7 @@ public class NoteActivity extends AppCompatActivity
     private boolean getIncomingIntent() {
         if (getIntent().hasExtra("selected_note")) {
             mInitialNote = getIntent().getParcelableExtra("selected_note");
+            mFinalNote = getIntent().getParcelableExtra("selected_note");
 
             mMode = EDIT_MODE_DISABLED;
             mIsNewNote = false;
@@ -88,6 +94,7 @@ public class NoteActivity extends AppCompatActivity
         return true;
     }
 
+
     private void enableEditMode() {
         mBackArrowContainer.setVisibility(View.GONE);
         mCheckContainer.setVisibility(View.VISIBLE);
@@ -97,6 +104,21 @@ public class NoteActivity extends AppCompatActivity
 
         mMode = EDIT_MODE_ENEBLED;
         enableContentInteraction();
+
+    }
+
+
+    private void saveChanges(){
+        if(mIsNewNote){
+            saveNewNote();
+        }
+        else{
+
+        }
+
+    }
+    private void saveNewNote(){
+        mNoteRepository.insertNoteTask(mFinalNote);
 
     }
 
@@ -128,6 +150,24 @@ public class NoteActivity extends AppCompatActivity
         disableContentInteraction();
 
 
+        String temp = mLinedEditText.getText().toString();
+        temp = temp.replace("\n","");
+        temp = temp.replace(" ","");
+        if(temp.length()>0){
+
+            mFinalNote.setTitle(mEditTitle.getText().toString());
+            mFinalNote.setContent(mLinedEditText.getText().toString());
+            String timestamp = "Aug 2019";
+            mFinalNote.setTimeStamp(timestamp);
+
+            if(!mFinalNote.getContent().equals(mInitialNote.getContent())
+            || !mFinalNote.getTitle().equals(mInitialNote.getTitle()))
+            {
+                saveChanges();
+
+            }
+        }
+
     }
 
     private void hideSoftKeyboard() {
@@ -150,6 +190,11 @@ public class NoteActivity extends AppCompatActivity
     private void setNewNoteProperties() {
         mViewTitle.setText("Note Title");
         mEditTitle.setText("Note Title");
+
+        mInitialNote = new Note();
+        mFinalNote = new Note();
+        mInitialNote.setTitle("Note Title");
+        mFinalNote.setTitle("Note Title");
     }
 
     @Override
