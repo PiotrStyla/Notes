@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.time.Month;
 import java.util.ArrayList;
 
 import pl.aplikacje.notes.R;
 import pl.aplikacje.notes.models.Note;
+import pl.aplikacje.notes.util.Utility;
 
 public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdapter.ViewHolder> {
 
@@ -34,8 +36,20 @@ public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
-        viewHolder.timestamp.setText(mNote.get(i).getTimeStamp());
-        viewHolder.title.setText(mNote.get(i).getTitle());
+        try {
+            String month = mNote.get(i).getTimeStamp().substring(0,2);
+            month = Utility.getMonthFromNumber(month);
+            String year = mNote.get(i).getTimeStamp().substring(3);
+            String timestamp = month+" "+year;
+            viewHolder.timestamp.setText(timestamp);
+            viewHolder.title.setText(mNote.get(i).getTitle());
+
+
+
+        }
+        catch (NullPointerException e){
+
+        }
 
     }
 

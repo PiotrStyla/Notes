@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import pl.aplikacje.notes.models.Note;
 import pl.aplikacje.notes.persistance.NoteRepository;
+import pl.aplikacje.notes.util.Utility;
 
 public class NoteActivity extends AppCompatActivity
         implements View.OnTouchListener,
@@ -160,7 +161,7 @@ public class NoteActivity extends AppCompatActivity
 
             mFinalNote.setTitle(mEditTitle.getText().toString());
             mFinalNote.setContent(mLinedEditText.getText().toString());
-            String timestamp = "Aug 2019";
+            String timestamp = Utility.getCurrentTimeStamp();
             mFinalNote.setTimeStamp(timestamp);
 
             if(!mFinalNote.getContent().equals(mInitialNote.getContent())
