@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -21,7 +23,8 @@ public class NoteActivity extends AppCompatActivity
         implements View.OnTouchListener,
         GestureDetector.OnGestureListener,
         GestureDetector.OnDoubleTapListener,
-        View.OnClickListener {
+        View.OnClickListener,
+        TextWatcher {
 
     private static final String TAG = "NoteActivity";
     private static final int EDIT_MODE_ENEBLED = 1;
@@ -76,7 +79,7 @@ public class NoteActivity extends AppCompatActivity
         mViewTitle.setOnClickListener(this);
         mCheck.setOnClickListener(this);
         mBackArrow.setOnClickListener(this);
-
+        mEditTitle.addTextChangedListener(this);
     }
 
     private boolean getIncomingIntent() {
@@ -294,6 +297,22 @@ public class NoteActivity extends AppCompatActivity
         if(mMode==EDIT_MODE_ENEBLED){
             enableEditMode();
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        mViewTitle.setText(s.toString());
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 }
 
