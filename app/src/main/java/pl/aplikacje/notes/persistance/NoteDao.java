@@ -29,7 +29,7 @@ public interface NoteDao {
 
 
     @Delete
-    int delet(Note...notes);
+    int delete(Note...notes);
 
     @Update
     int update(Note...notes);
