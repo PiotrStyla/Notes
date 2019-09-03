@@ -7,6 +7,7 @@ import java.util.List;
 
 import pl.aplikacje.notes.async.DeleteAsyncTask;
 import pl.aplikacje.notes.async.InsertAsyncTask;
+import pl.aplikacje.notes.async.UpdateAsyncTask;
 import pl.aplikacje.notes.models.Note;
 
 public class NoteRepository {
@@ -23,6 +24,7 @@ public class NoteRepository {
     }
 
     public void updateNote(Note note){
+        new UpdateAsyncTask(mNoteDatabase.getNoteDao()).execute(note);
 
     }
 
