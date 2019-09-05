@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 import pl.aplikacje.notes.models.Note;
 import pl.aplikacje.notes.persistance.NoteRepository;
 import pl.aplikacje.notes.util.Utility;
@@ -61,6 +63,8 @@ public class NoteActivity extends AppCompatActivity
 
         mNoteRepository = new NoteRepository(this);
 
+        setListeners();
+
         if (getIncomingIntent()) {
             //this is a new note (EDIT MODE)
             setNewNoteProperties();
@@ -71,7 +75,7 @@ public class NoteActivity extends AppCompatActivity
             setNoteProperties();
             disableContentInteraction();
         }
-        setListeners();
+
     }
 
     private void saveChanges(){
@@ -80,7 +84,6 @@ public class NoteActivity extends AppCompatActivity
         }
         else{
             updateNote();
-
         }
 
     }
@@ -164,9 +167,10 @@ public class NoteActivity extends AppCompatActivity
         disableContentInteraction();
 
 
-        String temp = mLinedEditText.getText().toString();
+        String temp = Objects.requireNonNull(mLinedEditText.getText()).toString();
         temp = temp.replace("\n", "");
         temp = temp.replace(" ", "");
+
         if (temp.length() > 0) {
 
             mFinalNote.setTitle(mEditTitle.getText().toString());
@@ -174,9 +178,11 @@ public class NoteActivity extends AppCompatActivity
             String timestamp = Utility.getCurrentTimeStamp();
             mFinalNote.setTimeStamp(timestamp);
 
-            if (!mFinalNote.getContent().equals(mInitialNote.getContent())
-                    || !mFinalNote.getTitle().equals(mInitialNote.getTitle())) {
+            if ((!mFinalNote.getContent().equals(mInitialNote.getContent()))
+                    || (!mFinalNote.getTitle().equals(mInitialNote.getTitle())) ){
+                updateNote();
                 saveChanges();
+
 
             }
         }
@@ -275,22 +281,22 @@ public class NoteActivity extends AppCompatActivity
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.toolbar_check: {
-                hideSoftKeyboard();
-                disableEditMode();
-                break;
-            }
-            case R.id.note_text_title: {
-                enableEditMode();
-                mEditTitle.requestFocus();
-                mEditTitle.setSelection(mEditTitle.length());
-                break;
-            }
-            case R.id.toolbar_back_arrow: {
-                finish();
-                break;
+                case R.id.toolbar_check: {
+                    hideSoftKeyboard();
+                    disableEditMode();
+                    break;
+                }
+                case R.id.note_text_title: {
+                    enableEditMode();
+                    mEditTitle.requestFocus();
+                    mEditTitle.setSelection(mEditTitle.length());
+                    break;
+                }
+                case R.id.toolbar_back_arrow: {
+                    finish();
+                    break;
 
-            }
+                }
 
         }
     }
@@ -331,7 +337,7 @@ public class NoteActivity extends AppCompatActivity
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
+    public void afterTextChanged(Editable editable) {
 
     }
 }
