@@ -27,11 +27,11 @@ public class NotesListActivity extends AppCompatActivity
     private static final String TAG = "NotesListActivity";
 
 
-    //UI components section
+    //UI komponenty
     private RecyclerView mRecyclerView;
 
 
-    //vars secton
+    //zmienne notatki
     private ArrayList<Note> mNotes = new ArrayList<>();
     private NotesRecyclerAdapter mNotesRecyclerAdapter;
     private NoteRepository mNoteRepository;
