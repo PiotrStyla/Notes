@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="67dp"
     android:orientation="horizontal"
     android:weightSum="100"
     android:background="@color/lightYellow"
@@ -10,7 +10,7 @@
 
     <View
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@color/mediumYellow"/>
 
@@ -19,8 +19,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/note_title"
         android:textSize="20sp"
-        android:layout_weight="75"
-        android:text="Some Note Title"
+        android:layout_weight="57"
+        android:text="Tytuł"
         android:textColor="#000"
         android:lines="1"
         android:padding="10dp" />
@@ -34,9 +34,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/note_timestamp"
-        android:textSize="15sp"
-        android:layout_weight="20"
-        android:text="Dec 1 2017"
-        android:padding="10dp" />
+        android:textSize="12sp"
+        android:layout_weight="38"
+        android:padding="10dp"
+        android:textAlignment="viewEnd"/>
 
 </LinearLayout>

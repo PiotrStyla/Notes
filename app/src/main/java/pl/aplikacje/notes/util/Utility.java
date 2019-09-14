@@ -9,7 +9,7 @@ public class Utility {
 
         try {
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
             String currentDateTime = dateFormat.format(new Date());
 
             return currentDateTime;

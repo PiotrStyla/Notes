@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 import pl.aplikacje.notes.models.Note;
 import pl.aplikacje.notes.persistance.NoteRepository;
 import pl.aplikacje.notes.util.Utility;
@@ -61,6 +63,8 @@ public class NoteActivity extends AppCompatActivity
 
         mNoteRepository = new NoteRepository(this);
 
+        setListeners();
+
         if (getIncomingIntent()) {
             //this is a new note (EDIT MODE)
             setNewNoteProperties();
@@ -71,7 +75,27 @@ public class NoteActivity extends AppCompatActivity
             setNoteProperties();
             disableContentInteraction();
         }
-        setListeners();
+
+    }
+
+    private void saveChanges(){
+        if(mIsNewNote){
+            saveNewNote();
+        }
+        else{
+            updateNote();
+        }
+
+    }
+    private void updateNote(){
+        mNoteRepository.updateNote(mFinalNote);
+    }
+
+
+
+    private void saveNewNote(){
+        mNoteRepository.insertNoteTask(mFinalNote);
+
     }
 
     private void setListeners() {
@@ -86,9 +110,15 @@ public class NoteActivity extends AppCompatActivity
     private boolean getIncomingIntent() {
         if (getIntent().hasExtra("selected_note")) {
             mInitialNote = getIntent().getParcelableExtra("selected_note");
-            mFinalNote = getIntent().getParcelableExtra("selected_note");
 
-            mMode = EDIT_MODE_DISABLED;
+            mFinalNote = new Note();
+            mFinalNote.setTitle(mInitialNote.getTitle());
+            mFinalNote.setContent(mInitialNote.getContent());
+            mFinalNote.setTimeStamp(mInitialNote.getTimeStamp());
+            mFinalNote.setId(mInitialNote.getId());
+
+
+            mMode = EDIT_MODE_ENEBLED;
             mIsNewNote = false;
             return false;
         }
@@ -99,32 +129,6 @@ public class NoteActivity extends AppCompatActivity
     }
 
 
-    private void enableEditMode() {
-        mBackArrowContainer.setVisibility(View.GONE);
-        mCheckContainer.setVisibility(View.VISIBLE);
-
-        mViewTitle.setVisibility(View.GONE);
-        mEditTitle.setVisibility(View.VISIBLE);
-
-        mMode = EDIT_MODE_ENEBLED;
-        enableContentInteraction();
-
-    }
-
-
-    private void saveChanges(){
-        if(mIsNewNote){
-            saveNewNote();
-        }
-        else{
-
-        }
-
-    }
-    private void saveNewNote(){
-        mNoteRepository.insertNoteTask(mFinalNote);
-
-    }
 
     private void disableContentInteraction() {
         mLinedEditText.setKeyListener(null);
@@ -141,8 +145,17 @@ public class NoteActivity extends AppCompatActivity
         mLinedEditText.setCursorVisible(true);
         mLinedEditText.requestFocus();
     }
+    private void enableEditMode() {
+        mBackArrowContainer.setVisibility(View.GONE);
+        mCheckContainer.setVisibility(View.VISIBLE);
 
+        mViewTitle.setVisibility(View.GONE);
+        mEditTitle.setVisibility(View.VISIBLE);
 
+        mMode = EDIT_MODE_ENEBLED;
+        enableContentInteraction();
+
+    }
     private void disableEditMode() {
         mBackArrowContainer.setVisibility(View.VISIBLE);
         mCheckContainer.setVisibility(View.GONE);
@@ -154,25 +167,37 @@ public class NoteActivity extends AppCompatActivity
         disableContentInteraction();
 
 
-        String temp = mLinedEditText.getText().toString();
-        temp = temp.replace("\n","");
-        temp = temp.replace(" ","");
-        if(temp.length()>0){
+        String temp = Objects.requireNonNull(mLinedEditText.getText()).toString();
+        temp = temp.replace("\n", "");
+        temp = temp.replace(" ", "");
+
+        if (temp.length() > 0) {
 
             mFinalNote.setTitle(mEditTitle.getText().toString());
             mFinalNote.setContent(mLinedEditText.getText().toString());
             String timestamp = Utility.getCurrentTimeStamp();
             mFinalNote.setTimeStamp(timestamp);
 
-            if(!mFinalNote.getContent().equals(mInitialNote.getContent())
-            || !mFinalNote.getTitle().equals(mInitialNote.getTitle()))
-            {
+            if ((!mFinalNote.getContent().equals(mInitialNote.getContent()))
+                    || (!mFinalNote.getTitle().equals(mInitialNote.getTitle())) ){
+                updateNote();
                 saveChanges();
+
 
             }
         }
-
     }
+
+
+
+
+
+
+
+
+
+
+
 
     private void hideSoftKeyboard() {
 
@@ -256,22 +281,22 @@ public class NoteActivity extends AppCompatActivity
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.toolbar_check: {
-                hideSoftKeyboard();
-                disableEditMode();
-                break;
-            }
-            case R.id.note_text_title: {
-                enableEditMode();
-                mEditTitle.requestFocus();
-                mEditTitle.setSelection(mEditTitle.length());
-                break;
-            }
-            case R.id.toolbar_back_arrow: {
-                finish();
-                break;
+                case R.id.toolbar_check: {
+                    hideSoftKeyboard();
+                    disableEditMode();
+                    break;
+                }
+                case R.id.note_text_title: {
+                    enableEditMode();
+                    mEditTitle.requestFocus();
+                    mEditTitle.setSelection(mEditTitle.length());
+                    break;
+                }
+                case R.id.toolbar_back_arrow: {
+                    finish();
+                    break;
 
-            }
+                }
 
         }
     }
@@ -312,7 +337,7 @@ public class NoteActivity extends AppCompatActivity
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
+    public void afterTextChanged(Editable editable) {
 
     }
 }
